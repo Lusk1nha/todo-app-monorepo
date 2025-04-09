@@ -1,0 +1,65 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  uid       String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name  String?
+  image String?
+
+  Credentials  Credentials?
+  Todo         Todo[]
+  Admin        Admin[]
+  AuthProvider AuthProvider[]
+}
+
+model Admin {
+  uid  String @id
+  User User   @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Credentials {
+  uid  String @id
+  User User   @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  email        String @unique
+  passwordHash String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Todo {
+  uid       String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  title   String
+  content String?
+
+  User    User?   @relation(fields: [userUid], references: [uid], onDelete: Cascade)
+  userUid String?
+}
+
+model AuthProvider {
+  uid String @id
+
+  type AuthProviderType
+  User User             @relation(fields: [uid], references: [uid], onDelete: Cascade)
+}
+
+enum AuthProviderType {
+  GOOGLE
+  CREDENTIALS
+}

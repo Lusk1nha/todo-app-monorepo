@@ -33,6 +33,20 @@
 
   --color-interdimensional-blue: oklch(0.39 0.2321 277.21);
   --color-fandango: oklch(0.51 0.2019 333.52);
+
+  --color-background: var(--theme-color-background);
+  --color-primary: var(--theme-color-primary);
+  --color-content: var(--theme-color-content);
+  --color-title: var(--theme-color-title);
+  --color-action-text: var(--theme-color-action-text);
+  --color-border: var(--theme-color-border);
+  --color-input-background: var(--theme-color-input-background);
+  --color-input-text: var(--theme-color-input-text);
+  --color-text: var(--theme-color-text);
+  --color-placeholder: var(--theme-color-placeholder);
+  --color-shadow: var(--theme-color-shadow);
+  --color-button-gradient: var(--theme-color-button-gradient);
+  --color-banner-gradient: var(--theme-color-banner-gradient);
 }
 
 @layer base {
@@ -91,3 +105,5 @@
     );
   }
 }
+
+

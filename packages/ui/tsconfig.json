@@ -1,8 +1,5 @@
 {
   "extends": "@todo-app/typescript-config/react-library.json",
-  "compilerOptions": {
-    "outDir": "dist"
-  },
-  "include": ["src"],
-  "exclude": ["node_modules", "dist"]
+  "include": [".", ".eslintrc.js"],
+  "exclude": ["dist", "build", "node_modules"]
 }

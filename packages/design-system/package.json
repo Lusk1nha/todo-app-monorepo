@@ -2,14 +2,6 @@
   "name": "@todo-app/design-system",
   "version": "0.0.0",
   "private": true,
-  "main": "index.js",
-  "scripts": {
-    "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css",
-    "lint": "eslint src/",
-    "dev": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch",
-    "type-check": "tsc --noEmit"
-  },
-  "license": "MIT",
   "sideEffects": [
     "**/*.css"
   ],
@@ -19,6 +11,12 @@
   "exports": {
     "./theme.css": "./src/theme.css",
     "./styles.css": "./dist/styles.css"
+  },
+  "scripts": {
+    "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css",
+    "lint": "eslint src/",
+    "dev": "tailwindcss -i ./src/styles.css -o ./dist/styles.css --watch",
+    "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
     "react": "^18.2.0"

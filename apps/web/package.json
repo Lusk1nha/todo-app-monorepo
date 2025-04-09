@@ -1,28 +1,40 @@
 {
   "name": "web",
-  "version": "0.1.0",
-  "type": "module",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint --max-warnings 0",
-    "check-types": "tsc --noEmit"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.0.12",
+    "@todo-app/design-system": "workspace:*",
     "@todo-app/ui": "workspace:*",
+    "@todo-app/utils": "workspace:*",
     "next": "^15.2.1",
+    "postcss": "^8.5.3",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.0.12"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@next/eslint-plugin-next": "^15.2.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
     "@todo-app/eslint-config": "workspace:*",
+    "@todo-app/jest-config": "workspace:*",
     "@todo-app/typescript-config": "workspace:*",
     "@types/node": "^22.13.10",
-    "@types/react": "19.0.12",
-    "@types/react-dom": "19.0.4",
-    "eslint": "^9.23.0",
-    "typescript": "5.8.2"
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "typescript": "^5.8.2"
   }
 }
