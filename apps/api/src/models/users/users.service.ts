@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { CreateUserDto, UpdateUserDto } from './dto/update.dto';
-import { UID } from 'src/entities/uid';
-import { Email } from 'src/entities/email';
+import { UID } from 'src/common/entities/uid/uid';
+import { Email } from 'src/common/entities/email/email';
 
 import { PrismaTransaction } from 'src/common/prisma/prisma.type';
 
@@ -27,7 +27,7 @@ export class UsersService {
   async getUserByCredentialsEmail(email: Email, prisma?: PrismaTransaction) {
     return await (prisma ?? this.prisma).user.findFirst({
       where: {
-        Credentials: { email: email.raw },
+        Credentials: { email: email.value },
       },
     });
   }
@@ -35,7 +35,7 @@ export class UsersService {
   async createUser(payload: CreateUserDto, prisma?: PrismaTransaction) {
     const { name, provider } = payload;
 
-    const uid = UID.create();
+    const uid = new UID();
 
     return (prisma ?? this.prisma).user.create({
       data: {

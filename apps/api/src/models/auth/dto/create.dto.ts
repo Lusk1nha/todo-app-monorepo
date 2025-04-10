@@ -22,7 +22,7 @@ export class RegisterWithCredentialsInput {
 
 export class RegisterWithCredentialsOutput {
   @ApiProperty()
-  @IsUUID()
+  @IsUUID('4')
   uid: string;
 
   @ApiProperty()

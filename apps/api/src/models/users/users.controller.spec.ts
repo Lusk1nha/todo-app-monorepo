@@ -5,7 +5,7 @@ import { User } from '@prisma/client';
 import { UsersMockup } from './mocks/users.mock';
 import { PrismaModule } from 'src/common/prisma/prisma.module';
 import { UpdateUserDto } from './dto/update.dto';
-import { UID } from 'src/entities/uid';
+import { UID } from 'src/common/entities/uid/uid';
 
 const fakeUsers: User[] = new UsersMockup().generateMany(10);
 

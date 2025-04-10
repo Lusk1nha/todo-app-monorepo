@@ -12,12 +12,18 @@ export class AuthController {
   @ApiBody({ type: RegisterWithCredentialsInput })
   @ApiResponse({ status: 201, description: 'User created' })
   @ApiResponse({ status: 400, description: 'Bad request' })
-  register(@Body() registerUserDto: RegisterWithCredentialsInput) {
-    return this.authService.registerUser(registerUserDto);
+  register(@Body() payload: RegisterWithCredentialsInput) {
+    return this.authService.signUp(payload);
   }
 
   @Post('login')
-  login(@Body() loginUserDto: LoginWithCredentialsInput) {
-    return this.authService.login(loginUserDto);
+  @ApiOperation({ summary: 'Login user' })
+  @ApiBody({ type: LoginWithCredentialsInput })
+  @ApiResponse({ status: 200, description: 'User logged in' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 404, description: 'User not found' })
+  login(@Body() payload: LoginWithCredentialsInput) {
+    return this.authService.signIn(payload);
   }
 }

@@ -8,7 +8,6 @@ export function hashPassword(password: string): string {
 }
 
 export function comparePassword(password: string, passwordHash: string): boolean {
-  console.log('Comparing password:', password, 'with hash:', passwordHash);
   const isMatch = bcrypt.compareSync(password, passwordHash);
   return isMatch;
 }

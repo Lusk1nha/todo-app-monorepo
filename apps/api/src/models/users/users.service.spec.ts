@@ -4,7 +4,7 @@ import { UsersService } from './users.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { PrismaModule } from 'src/common/prisma/prisma.module';
-import { UID } from 'src/entities/uid';
+import { UID } from 'src/common/entities/uid/uid';
 
 const fakeUsers: User[] = new UsersMockup().generateMany(10);
 

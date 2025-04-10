@@ -1,5 +1,5 @@
 import { createParamDecorator, BadRequestException } from '@nestjs/common';
-import { UID } from 'src/entities/uid';
+import { UID } from './uid';
 
 export const UIDParam = createParamDecorator((data: string, req) => {
   try {

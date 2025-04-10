@@ -9,8 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './models/auth/auth.module';
 import { CredentialsModule } from './models/credentials/credentials.module';
-
-const MAX_AGE = 24 * 60 * 60;
+import { JWT_SECRET, JWT_EXPIRATION } from './common/constants/secrets';
 
 @Module({
   imports: [
@@ -19,14 +18,14 @@ const MAX_AGE = 24 * 60 * 60;
     PrismaModule,
     JwtModule.register({
       global: true,
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: MAX_AGE },
+      secret: JWT_SECRET,
+      signOptions: { expiresIn: JWT_EXPIRATION },
     }),
 
     // Routes Modules
     AuthModule,
     UsersModule,
-    CredentialsModule
+    CredentialsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

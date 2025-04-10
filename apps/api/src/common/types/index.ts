@@ -1,4 +1,4 @@
-export type Role = 'admin' | 'user';
+import { Role } from '../roles/roles.utils';
 
 export type GetUserType = {
   uid: string;

@@ -1,12 +1,12 @@
-import { User } from '@prisma/client';
-
 import { faker } from '@faker-js/faker';
 import { BaseMockup } from '@todo-app/mockup/src/mockup';
-import { UID } from 'src/entities/uid';
+import { UID } from 'src/common/entities/uid/uid';
+import { UserEntity } from '../entity/users.entity';
+import { User } from '@prisma/client';
 
-export class UsersMockup extends BaseMockup<User> {
-  protected generateOne(): User {
-    let uid = UID.create().value;
+export class UsersMockup extends BaseMockup<UserEntity> {
+  protected generateOne(): UserEntity {
+    let uid = new UID();
     let name = faker.person.firstName();
     let image = faker.image.avatar();
 
@@ -15,12 +15,14 @@ export class UsersMockup extends BaseMockup<User> {
       refDate: createdAt,
     });
 
-    return {
-      uid,
+    const user: User = {
+      uid: uid.value,
       name,
       image,
       createdAt,
       updatedAt,
     };
+
+    return new UserEntity(user);
   }
 }

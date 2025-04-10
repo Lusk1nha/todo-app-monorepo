@@ -7,7 +7,7 @@ import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from 'src/helpers/password';
 
 import { CredentialsService } from '../credentials/credentials.service';
-import { Email } from 'src/entities/email';
+import { Email } from 'src/common/entities/email/email';
 import { UsersService } from '../users/users.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
@@ -25,7 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async registerUser(data: RegisterWithCredentialsInput) {
+  async signUp(data: RegisterWithCredentialsInput) {
     this.logger.log('Registering user with credentials...');
 
     const name = data.name.trim();
@@ -36,7 +36,7 @@ export class AuthService {
     const userExists = await this.credentialsService.getByEmail(email);
 
     if (userExists) {
-      this.logger.warn(`Registration attempt with existing email: ${email.raw}`);
+      this.logger.warn(`Registration attempt with existing email: ${email.value}`);
       throw new BadRequestException('User already exists with this email.');
     }
 
@@ -65,7 +65,7 @@ export class AuthService {
     return registeredUser;
   }
 
-  async login(data: LoginWithCredentialsInput) {
+  async signIn(data: LoginWithCredentialsInput) {
     const email = new Email(data.email);
     const password = data.password;
 
@@ -73,7 +73,7 @@ export class AuthService {
       const user = await this.usersService.getUserByCredentialsEmail(email, prisma);
 
       if (!user) {
-        this.logger.warn(`Login attempt with non-existing email: ${email.raw}`);
+        this.logger.warn(`Login attempt with non-existing email: ${email.value}`);
         throw new UnauthorizedException('Invalid email or password.');
       }
 
@@ -84,7 +84,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid email or password.');
       }
 
-      const jwtToken = this.jwtService.sign(
+      const accessToken = await this.jwtService.signAsync(
         {
           uid: user.uid,
           sub: user.uid,
@@ -95,7 +95,7 @@ export class AuthService {
         },
       );
 
-      return { token: jwtToken, user };
+      return { token: accessToken };
     });
   }
 }

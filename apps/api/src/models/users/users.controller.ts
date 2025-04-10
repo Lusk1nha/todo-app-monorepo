@@ -4,8 +4,8 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entity/users.entity';
-import { UID } from 'src/entities/uid';
-import { UIDParam } from 'src/common/decorators/uid.decorator';
+import { UID } from 'src/common/entities/uid/uid';
+import { UIDParam } from 'src/common/entities/uid/uid.decorator';
 
 @Controller('users')
 @ApiTags('users')

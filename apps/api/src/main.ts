@@ -12,10 +12,10 @@ async function bootstrap() {
     .setDescription('API Documentation')
     .setVersion('1.0')
     .addTag('api')
+    .addBearerAuth()
     .build();
 
-  const documentFactory = () =>
-    SwaggerModule.createDocument(app, configSwagger);
+  const documentFactory = () => SwaggerModule.createDocument(app, configSwagger);
   SwaggerModule.setup('api', app, documentFactory, {
     jsonDocumentUrl: 'swagger/json',
   });

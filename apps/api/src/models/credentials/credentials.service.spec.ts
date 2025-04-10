@@ -2,7 +2,7 @@ import { CredentialsMockup } from './mocks/credentials.mock';
 import { PrismaModule } from 'src/common/prisma/prisma.module';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CredentialsService } from './credentials.service';
-import { Email } from 'src/entities/email';
+import { Email } from 'src/common/entities/email/email';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 import { randomArrayElement } from '@todo-app/mockup/src/random';
 import { CreateCredentialsDto } from './dto/create.dto';
