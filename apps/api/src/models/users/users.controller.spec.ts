@@ -6,6 +6,8 @@ import { UsersMockup } from './mocks/users.mock';
 import { PrismaModule } from 'src/common/prisma/prisma.module';
 import { UpdateUserDto } from './dto/update.dto';
 import { UID } from 'src/common/entities/uid/uid';
+import { GetUserType } from 'src/common/types';
+import { Role } from 'src/common/roles/roles.utils';
 
 const fakeUsers: User[] = new UsersMockup().generateMany(10);
 
@@ -56,10 +58,18 @@ describe('UsersController', () => {
 
   describe('updateById', () => {
     it('should update a user', async () => {
-      const uid = new UID(fakeUsers[2].uid);
+      const currentUser = fakeUsers[2];
 
+      const uid = new UID(currentUser.uid);
       const payload = { name: 'Updated Name' } as UpdateUserDto;
-      const response = await controller.update(uid, payload);
+
+      const getUser: GetUserType = {
+        uid: currentUser.uid,
+        sub: currentUser.uid,
+        roles: [Role.User],
+      };
+
+      const response = await controller.update(uid, payload, getUser);
 
       expect(service.updateById).toHaveBeenCalledWith(uid, payload);
       expect(response).toEqual(fakeUsers[2]);
@@ -68,8 +78,16 @@ describe('UsersController', () => {
 
   describe('removeById', () => {
     it('should remove a user', async () => {
-      const uid = new UID(fakeUsers[2].uid);
-      const response = await controller.remove(uid);
+      const currentUser = fakeUsers[2];
+
+      const getUser: GetUserType = {
+        uid: currentUser.uid,
+        sub: currentUser.uid,
+        roles: [Role.User],
+      };
+
+      const uid = new UID(currentUser.uid);
+      const response = await controller.remove(uid, getUser);
 
       expect(service.removeById).toHaveBeenCalledWith(uid);
       expect(response).toBeUndefined();

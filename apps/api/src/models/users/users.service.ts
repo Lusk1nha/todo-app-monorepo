@@ -52,6 +52,7 @@ export class UsersService {
 
   async updateById(uid: UID, payload: UpdateUserDto, prisma?: PrismaTransaction) {
     await this.getUserById(uid);
+
     return (prisma ?? this.prisma).user.update({
       where: { uid: uid.value },
       data: payload,

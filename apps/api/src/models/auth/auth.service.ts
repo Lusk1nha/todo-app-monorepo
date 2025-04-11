@@ -12,7 +12,8 @@ import { UsersService } from '../users/users.service';
 import { PrismaService } from 'src/common/prisma/prisma.service';
 
 import { Logger } from '@nestjs/common';
-import { AuthProviderType } from '@prisma/client';
+import { AuthProviderType, User } from '@prisma/client';
+import { JWT_EXPIRATION } from 'src/common/constants/secrets';
 
 @Injectable()
 export class AuthService {
@@ -65,37 +66,35 @@ export class AuthService {
     return registeredUser;
   }
 
-  async signIn(data: LoginWithCredentialsInput) {
-    const email = new Email(data.email);
-    const password = data.password;
+  async validateCredentials(email: Email, password: string): Promise<User> {
+    const user = await this.usersService.getUserByCredentialsEmail(email);
 
-    return this.prisma.$transaction(async (prisma) => {
-      const user = await this.usersService.getUserByCredentialsEmail(email, prisma);
+    if (!user) {
+      this.logger.warn(`Login attempt with non-existing email: ${email.value}`);
+      throw new UnauthorizedException('Invalid email or password.');
+    }
 
-      if (!user) {
-        this.logger.warn(`Login attempt with non-existing email: ${email.value}`);
-        throw new UnauthorizedException('Invalid email or password.');
-      }
+    const credentials = await this.credentialsService.getByEmail(email);
+    const isPasswordMatch = comparePassword(password, credentials.passwordHash);
 
-      const credentials = await this.credentialsService.getByEmail(email, prisma);
-      const isPasswordMatch = comparePassword(password, credentials.passwordHash);
+    if (!isPasswordMatch) {
+      throw new UnauthorizedException('Invalid email or password.');
+    }
 
-      if (!isPasswordMatch) {
-        throw new UnauthorizedException('Invalid email or password.');
-      }
+    return user;
+  }
 
-      const accessToken = await this.jwtService.signAsync(
-        {
-          uid: user.uid,
-          sub: user.uid,
-        },
-        {
-          algorithm: 'HS256',
-          expiresIn: '1h',
-        },
-      );
+  async signIn(user: User): Promise<{ token: string }> {
+    const payload = {
+      uid: user.uid,
+      sub: user.uid,
+    };
 
-      return { token: accessToken };
+    const accessToken = await this.jwtService.signAsync(payload, {
+      algorithm: 'HS256',
+      expiresIn: JWT_EXPIRATION,
     });
+
+    return { token: accessToken };
   }
 }

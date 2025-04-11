@@ -10,6 +10,10 @@ export const checkRowLevelPermission = (
 ) => {
   if (!requestedUid) return false;
 
+  if (!user) {
+    throw new ForbiddenException("You don't have permission to access this resource.");
+  }
+
   if (user.roles?.some((role) => roles.includes(role))) {
     return true;
   }
@@ -17,7 +21,7 @@ export const checkRowLevelPermission = (
   const uids = typeof requestedUid === 'string' ? [requestedUid] : requestedUid.filter(Boolean);
 
   if (!uids.includes(user.uid)) {
-    throw new ForbiddenException();
+    throw new ForbiddenException("You don't have permission to access this resource.");
   }
 };
 

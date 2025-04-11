@@ -10,6 +10,7 @@ import { UsersModule } from './models/users/users.module';
 import { AuthModule } from './models/auth/auth.module';
 import { CredentialsModule } from './models/credentials/credentials.module';
 import { JWT_SECRET, JWT_EXPIRATION } from './common/constants/secrets';
+import { RolesModule } from './models/roles/roles.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { JWT_SECRET, JWT_EXPIRATION } from './common/constants/secrets';
     AuthModule,
     UsersModule,
     CredentialsModule,
+    RolesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

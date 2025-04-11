@@ -15,19 +15,13 @@ model User {
   name  String?
   image String?
 
-  Credentials  Credentials?
-  Todo         Todo[]
-  Admin        Admin[]
+  Credentials Credentials?
+  Todo        Todo[]
+
   AuthProvider AuthProvider[]
-  UserRole     UserRole[]
-}
+  Admin        Admin[]
 
-model Admin {
-  uid  String @id
-  User User   @relation(fields: [uid], references: [uid], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  @@map("users")
 }
 
 model Credentials {
@@ -39,6 +33,18 @@ model Credentials {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@map("credentials")
+}
+
+model Admin {
+  uid  String @id
+  User User   @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("admins")
 }
 
 model Todo {
@@ -51,6 +57,10 @@ model Todo {
 
   User    User?   @relation(fields: [userUid], references: [uid], onDelete: Cascade)
   userUid String?
+
+  completed Boolean @default(false)
+
+  @@map("todos")
 }
 
 model AuthProvider {
@@ -58,50 +68,13 @@ model AuthProvider {
 
   type AuthProviderType
   User User             @relation(fields: [uid], references: [uid], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@map("auth_providers")
 }
 
 enum AuthProviderType {
   GOOGLE
   CREDENTIALS
-}
-
-model Role {
-  uid Int @id @default(autoincrement())
-
-  name           String           @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  RolePermission RolePermission[]
-  UserRole       UserRole[]
-}
-
-model UserRole {
-  userId String
-  roleId Int
-
-  User User @relation(fields: [userId], references: [uid], onDelete: Cascade)
-  Role Role @relation(fields: [roleId], references: [uid], onDelete: Cascade)
-
-  @@unique([userId, roleId])
-}
-
-model Permission {
-  uid Int @id @default(autoincrement())
-
-  name        String  @unique
-  description String?
-
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  RolePermission RolePermission[]
-}
-
-model RolePermission {
-  roleId       Int
-  permissionId Int
-
-  Role       Role       @relation(fields: [roleId], references: [uid], onDelete: Cascade)
-  Permission Permission @relation(fields: [permissionId], references: [uid], onDelete: Cascade)
-
-  @@id([roleId, permissionId])
 }

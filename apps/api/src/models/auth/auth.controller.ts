@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginWithCredentialsInput, RegisterWithCredentialsInput } from './dto/create.dto';
 import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import { Email } from 'src/common/entities/email/email';
 
 @Controller('auth')
 export class AuthController {
@@ -23,7 +24,10 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  login(@Body() payload: LoginWithCredentialsInput) {
-    return this.authService.signIn(payload);
+  async login(@Body() payload: LoginWithCredentialsInput) {
+    const email = new Email(payload.email);
+    const user = await this.authService.validateCredentials(email, payload.password);
+
+    return this.authService.signIn(user);
   }
 }
