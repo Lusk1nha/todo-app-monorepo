@@ -1,9 +1,10 @@
-import { createParamDecorator, BadRequestException } from '@nestjs/common';
+import { Request } from 'express';
 import { UID } from './uid';
+import { createParamDecorator, BadRequestException } from '@nestjs/common';
 
 export const UIDParam = createParamDecorator((data: string, req) => {
   try {
-    let request = req.switchToHttp().getRequest();
+    let request: Request = req.switchToHttp().getRequest();
     let param = request.params[data];
 
     if (!param) {

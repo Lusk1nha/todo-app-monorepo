@@ -25,10 +25,7 @@ describe('CredentialsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CredentialsService,
-        { provide: PrismaService, useValue: prismaMock },
-      ],
+      providers: [CredentialsService, { provide: PrismaService, useValue: prismaMock }],
       imports: [PrismaModule],
     }).compile();
 
