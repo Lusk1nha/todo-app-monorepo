@@ -1,7 +1,18 @@
 import { Role } from '../roles/roles.utils';
 
-export type GetUserType = {
-  uid: string;
+export type JWTDefaultValues = {
+  iss: string;
+  aud: string;
+  iat: number;
+  exp: number;
   sub: string;
-  roles: Role[];
 };
+
+export interface CreateUserAuthType extends JWTDefaultValues {
+  name?: string;
+}
+
+export interface UserAuthType extends JWTDefaultValues {
+  name?: string;
+  roles: Role[];
+}

@@ -20,9 +20,7 @@ export class AuthGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request: Request & {
-      user: User & { roles: Role[] };
-    } = context.switchToHttp().getRequest();
+    const request: RequestWithUser = context.switchToHttp().getRequest();
 
     try {
       await this._authenticateUser(request);

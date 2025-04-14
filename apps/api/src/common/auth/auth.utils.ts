@@ -1,10 +1,11 @@
-import { GetUserType } from 'src/common/types';
+import { UserAuthType } from 'src/common/types';
 import { ForbiddenException } from '@nestjs/common';
 import { Request } from 'express';
+
 import { Role } from '../roles/roles.utils';
 
 export const checkRowLevelPermission = (
-  user: GetUserType,
+  user: UserAuthType,
   requestedUid?: string | string[],
   roles: Role[] = [Role.Admin],
 ) => {
@@ -20,7 +21,7 @@ export const checkRowLevelPermission = (
 
   const uids = typeof requestedUid === 'string' ? [requestedUid] : requestedUid.filter(Boolean);
 
-  if (!uids.includes(user.uid)) {
+  if (!uids.includes(user.sub)) {
     throw new ForbiddenException("You don't have permission to access this resource.");
   }
 };

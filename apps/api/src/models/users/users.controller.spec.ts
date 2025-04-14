@@ -6,8 +6,9 @@ import { UsersMockup } from './mocks/users.mock';
 import { PrismaModule } from 'src/common/prisma/prisma.module';
 import { UpdateUserDto } from './dto/update.dto';
 import { UID } from 'src/common/entities/uid/uid';
-import { GetUserType } from 'src/common/types';
+import { UserAuthType } from 'src/common/types';
 import { Role } from 'src/common/roles/roles.utils';
+import { JwtModule } from '@nestjs/jwt';
 
 const fakeUsers: User[] = new UsersMockup().generateMany(10);
 
@@ -15,7 +16,7 @@ const serviceMock = {
   getAllUsers: jest.fn().mockResolvedValue(fakeUsers),
   getUserById: jest.fn().mockResolvedValue(fakeUsers[0]),
   updateById: jest.fn().mockResolvedValue(fakeUsers[2]),
-  removeById: jest.fn(),
+  removeById: jest.fn().mockResolvedValue(undefined),
 };
 
 describe('UsersController', () => {
@@ -30,7 +31,7 @@ describe('UsersController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [{ provide: UsersService, useValue: serviceMock }],
-      imports: [PrismaModule],
+      imports: [PrismaModule, JwtModule],
     }).compile();
 
     controller = module.get<UsersController>(UsersController);
@@ -63,10 +64,14 @@ describe('UsersController', () => {
       const uid = new UID(currentUser.uid);
       const payload = { name: 'Updated Name' } as UpdateUserDto;
 
-      const getUser: GetUserType = {
-        uid: currentUser.uid,
+      const getUser: UserAuthType = {
         sub: currentUser.uid,
-        roles: [Role.User],
+        aud: 'web',
+        iss: 'api',
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        name: currentUser.name,
+        roles: [Role.Admin],
       };
 
       const response = await controller.update(uid, payload, getUser);
@@ -80,10 +85,14 @@ describe('UsersController', () => {
     it('should remove a user', async () => {
       const currentUser = fakeUsers[2];
 
-      const getUser: GetUserType = {
-        uid: currentUser.uid,
+      const getUser: UserAuthType = {
         sub: currentUser.uid,
-        roles: [Role.User],
+        aud: 'web',
+        iss: 'api',
+        iat: Math.floor(Date.now() / 1000),
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        name: currentUser.name,
+        roles: [Role.Admin],
       };
 
       const uid = new UID(currentUser.uid);

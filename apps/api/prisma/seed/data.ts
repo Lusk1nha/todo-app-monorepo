@@ -1,11 +1,7 @@
 import { Prisma } from '@prisma/client';
 
 import { v4 as uuid } from 'uuid';
-
-function randomAdminEmail() {
-  const randomEmail = Math.random().toString(36).substring(2, 15) + '@admin.com';
-  return randomEmail;
-}
+import { randomAdminEmail } from './utils';
 
 export const users: Prisma.UserCreateInput[] = [
   {

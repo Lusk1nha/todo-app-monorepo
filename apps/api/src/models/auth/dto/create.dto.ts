@@ -1,6 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsAlphanumeric, IsEmail, IsNotEmpty, IsUUID } from 'class-validator';
+import { User } from '@prisma/client';
+import {
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsNumberString,
+  IsString,
+  IsUrl,
+  IsUUID,
+} from 'class-validator';
 
+export class TokenResponse {
+  @ApiProperty()
+  @IsString()
+  accessToken: string;
+
+  @ApiProperty()
+  @IsString()
+  tokenType: 'Bearer';
+
+  @ApiProperty()
+  @IsNumberString()
+  expiresIn: string | number;
+}
 export class RegisterWithCredentialsInput {
   @ApiProperty({
     required: true,
@@ -20,21 +42,26 @@ export class RegisterWithCredentialsInput {
   password: string;
 }
 
-export class RegisterWithCredentialsOutput {
+export class RegisterWithCredentialsOutput implements User {
   @ApiProperty()
   @IsUUID('4')
   uid: string;
 
   @ApiProperty()
-  @IsAlphanumeric()
+  @IsUrl()
+  image: string;
+
+  @ApiProperty()
+  @IsString()
   name: string;
 
-  @IsEmail()
   @ApiProperty()
-  email: string;
+  @IsDate()
+  createdAt: Date;
 
   @ApiProperty()
-  image?: string;
+  @IsDate()
+  updatedAt: Date;
 }
 
 export class LoginWithCredentialsInput {
@@ -44,4 +71,13 @@ export class LoginWithCredentialsInput {
 
   @ApiProperty()
   password: string;
+}
+
+export class LoginWithCredentialsOutput {
+  @ApiProperty()
+  @IsUUID('4')
+  userId: string;
+
+  @ApiProperty()
+  token: TokenResponse;
 }

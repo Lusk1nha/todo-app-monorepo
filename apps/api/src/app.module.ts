@@ -15,7 +15,9 @@ import { RolesModule } from './models/roles/roles.module';
 @Module({
   imports: [
     // Global Modules
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PrismaModule,
     JwtModule.register({
       global: true,

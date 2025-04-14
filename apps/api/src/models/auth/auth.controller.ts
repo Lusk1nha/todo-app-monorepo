@@ -1,33 +1,82 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LoginWithCredentialsInput, RegisterWithCredentialsInput } from './dto/create.dto';
-import { ApiOperation, ApiBody, ApiResponse } from '@nestjs/swagger';
+import {
+  LoginWithCredentialsInput,
+  LoginWithCredentialsOutput,
+  RegisterWithCredentialsInput,
+  RegisterWithCredentialsOutput,
+} from './dto/create.dto';
+
+import {
+  ApiTags,
+  ApiOperation,
+  ApiBody,
+  ApiResponse,
+  ApiConflictResponse,
+  ApiUnauthorizedResponse,
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { Email } from 'src/common/entities/email/email';
 
 @Controller('auth')
+@ApiTags('Authentication')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
-  @ApiOperation({ summary: 'Register new user' })
-  @ApiBody({ type: RegisterWithCredentialsInput })
-  @ApiResponse({ status: 201, description: 'User created' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  register(@Body() payload: RegisterWithCredentialsInput) {
+  @ApiOperation({
+    summary: 'Register new user',
+    description: 'Creates a new user account with email and password credentials',
+  })
+  @ApiBody({
+    type: RegisterWithCredentialsInput,
+    description: 'User registration details',
+  })
+  @ApiCreatedResponse({
+    type: RegisterWithCredentialsOutput,
+    description: 'User registered successfully',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid input data or missing required fields',
+  })
+  @ApiConflictResponse({
+    description: 'Email already registered',
+  })
+  async register(
+    @Body() payload: RegisterWithCredentialsInput,
+  ): Promise<RegisterWithCredentialsOutput> {
     return this.authService.signUp(payload);
   }
 
   @Post('login')
-  @ApiOperation({ summary: 'Login user' })
-  @ApiBody({ type: LoginWithCredentialsInput })
-  @ApiResponse({ status: 200, description: 'User logged in' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  @ApiResponse({ status: 400, description: 'Bad request' })
-  @ApiResponse({ status: 404, description: 'User not found' })
-  async login(@Body() payload: LoginWithCredentialsInput) {
+  @ApiOperation({
+    summary: 'Authenticate user',
+    description: 'Logs in a user with email and password credentials',
+  })
+  @ApiBody({
+    type: LoginWithCredentialsInput,
+    description: 'User login credentials',
+  })
+  @ApiOkResponse({
+    type: LoginWithCredentialsOutput,
+    description: 'User authenticated successfully',
+  })
+  @ApiBadRequestResponse({
+    description: 'Invalid input data or missing required fields',
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Invalid credentials',
+  })
+  @ApiResponse({
+    status: HttpStatus.TOO_MANY_REQUESTS,
+    description: 'Too many login attempts - rate limited',
+  })
+  async login(@Body() payload: LoginWithCredentialsInput): Promise<LoginWithCredentialsOutput> {
     const email = new Email(payload.email);
     const user = await this.authService.validateCredentials(email, payload.password);
 
-    return this.authService.signIn(user);
+    return this.authService.signInWithCredentials(user);
   }
 }
