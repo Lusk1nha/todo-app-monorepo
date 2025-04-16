@@ -8,8 +8,9 @@ import { Reflector } from '@nestjs/core';
 import { Role } from '../roles/roles.utils';
 import { User } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
+import { UserAuthType } from '../types';
 
-export type RequestWithUser = Request & { user: User & { roles: Role[] } };
+export type RequestWithUser = Request & { user: UserAuthType & { roles: Role[] } };
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -55,7 +56,7 @@ export class AuthGuard implements CanActivate {
     context: ExecutionContext,
   ): Promise<boolean> {
     const requiredRoles = this._getMetadata<Role[]>('roles', context);
-    const userRoles = await this._getUserRoles(request.user.uid);
+    const userRoles = await this._getUserRoles(request.user.sub);
 
     request.user.roles = userRoles;
 

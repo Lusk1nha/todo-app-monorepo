@@ -1,21 +1,23 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { PrismaService } from 'src/common/prisma/prisma.service';
+
 import { CreateUserDto, UpdateUserDto } from './dto/update.dto';
 import { UID } from 'src/common/entities/uid/uid';
 import { Email } from 'src/common/entities/email/email';
 
 import { PrismaTransaction } from 'src/common/prisma/prisma.type';
+import { UsersRepository } from './users.repository';
+import { UserQueryDto } from './dto/query.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly usersRepository: UsersRepository) {}
 
-  async getAllUsers(prisma?: PrismaTransaction) {
-    return (prisma ?? this.prisma).user.findMany();
+  async getAllUsers(params?: UserQueryDto, tx?: PrismaTransaction) {
+    return this.usersRepository.getAll(params, tx);
   }
 
-  async getUserById(uid: UID, prisma?: PrismaTransaction) {
-    const user = await this._findUserByUid(uid.value, prisma);
+  async getUserById(uid: UID, tx?: PrismaTransaction) {
+    const user = await this._findUserByUid(uid.value, tx);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -24,52 +26,54 @@ export class UsersService {
     return user;
   }
 
-  async getUserByCredentialsEmail(email: Email, prisma?: PrismaTransaction) {
-    return await (prisma ?? this.prisma).user.findFirst({
-      where: {
-        Credentials: { email: email.value },
+  async getUserByCredentialsEmail(email: Email, tx?: PrismaTransaction) {
+    return this.usersRepository.get(
+      {
+        where: {
+          Credentials: { email: email.value },
+        },
       },
-    });
+      tx,
+    );
   }
 
-  async createUser(payload: CreateUserDto, prisma?: PrismaTransaction) {
+  async createUser(payload: CreateUserDto, tx?: PrismaTransaction) {
     const { name, provider } = payload;
 
     const uid = new UID();
 
-    return (prisma ?? this.prisma).user.create({
-      data: {
-        uid: uid.value,
-        name: name,
-        AuthProvider: {
-          create: {
-            type: provider,
+    return this.usersRepository.create(
+      {
+        data: {
+          uid: uid.value,
+          name: name,
+          AuthProvider: {
+            create: {
+              type: provider,
+            },
           },
         },
       },
-    });
+      tx,
+    );
   }
 
-  async updateById(uid: UID, payload: UpdateUserDto, prisma?: PrismaTransaction) {
+  async updateById(uid: UID, payload: UpdateUserDto, tx?: PrismaTransaction) {
     await this.getUserById(uid);
-
-    return (prisma ?? this.prisma).user.update({
-      where: { uid: uid.value },
-      data: payload,
-    });
+    return this.usersRepository.update(uid.value, payload, tx);
   }
 
-  async removeById(uid: UID, prisma?: PrismaTransaction) {
+  async removeById(uid: UID, tx?: PrismaTransaction) {
     await this.getUserById(uid);
-
-    return (prisma ?? this.prisma).user.delete({
-      where: { uid: uid.value },
-    });
+    return this.usersRepository.delete(uid.value, tx);
   }
 
-  private async _findUserByUid(uid: string, prisma?: PrismaTransaction) {
-    return (prisma ?? this.prisma).user.findUnique({
-      where: { uid },
-    });
+  private async _findUserByUid(uid: string, tx?: PrismaTransaction) {
+    return this.usersRepository.get(
+      {
+        where: { uid },
+      },
+      tx,
+    );
   }
 }

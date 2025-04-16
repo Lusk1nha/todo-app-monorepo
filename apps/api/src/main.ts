@@ -39,7 +39,7 @@ async function bootstrap() {
         bearerFormat: 'JWT',
         description: 'Enter JWT token',
       })
-      .addServer(`http://localhost:${port}/api/v1`, 'Local Development Server')
+      .addServer(`http://localhost:${port}`, 'Local Development Server')
       .build();
 
     const document = SwaggerModule.createDocument(app, configSwagger);

@@ -55,8 +55,8 @@ model Todo {
   title   String
   content String?
 
-  User    User?   @relation(fields: [userUid], references: [uid], onDelete: Cascade)
-  userUid String?
+  User   User?   @relation(fields: [userId], references: [uid], onDelete: Cascade)
+  userId String?
 
   completed Boolean @default(false)
 

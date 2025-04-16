@@ -65,11 +65,12 @@ export class RegisterWithCredentialsOutput implements User {
 }
 
 export class LoginWithCredentialsInput {
-  @IsEmail()
   @ApiProperty()
+  @IsEmail()
   email: string;
 
   @ApiProperty()
+  @IsString()
   password: string;
 }
 

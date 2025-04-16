@@ -11,6 +11,7 @@ import { AuthModule } from './models/auth/auth.module';
 import { CredentialsModule } from './models/credentials/credentials.module';
 import { JWT_SECRET, JWT_EXPIRATION } from './common/constants/secrets';
 import { RolesModule } from './models/roles/roles.module';
+import { TodosModule } from './models/todos/todos.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { RolesModule } from './models/roles/roles.module';
     UsersModule,
     CredentialsModule,
     RolesModule,
+    TodosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

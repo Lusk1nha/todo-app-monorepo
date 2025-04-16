@@ -32,9 +32,9 @@ CREATE TABLE "todos" (
     "updatedAt" DATETIME NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
-    "userUid" TEXT,
+    "userId" TEXT,
     "completed" BOOLEAN NOT NULL DEFAULT false,
-    CONSTRAINT "todos_userUid_fkey" FOREIGN KEY ("userUid") REFERENCES "users" ("uid") ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT "todos_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("uid") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable

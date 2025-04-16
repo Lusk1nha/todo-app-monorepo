@@ -8,7 +8,7 @@ export type JWTDefaultValues = {
   sub: string;
 };
 
-export interface CreateUserAuthType extends JWTDefaultValues {
+export interface CreateUserAuthType extends Omit<JWTDefaultValues, 'exp'> {
   name?: string;
 }
 

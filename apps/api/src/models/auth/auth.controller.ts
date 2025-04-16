@@ -63,15 +63,8 @@ export class AuthController {
     type: LoginWithCredentialsOutput,
     description: 'User authenticated successfully',
   })
-  @ApiBadRequestResponse({
-    description: 'Invalid input data or missing required fields',
-  })
   @ApiUnauthorizedResponse({
     description: 'Invalid credentials',
-  })
-  @ApiResponse({
-    status: HttpStatus.TOO_MANY_REQUESTS,
-    description: 'Too many login attempts - rate limited',
   })
   async login(@Body() payload: LoginWithCredentialsInput): Promise<LoginWithCredentialsOutput> {
     const email = new Email(payload.email);
