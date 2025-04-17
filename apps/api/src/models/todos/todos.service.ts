@@ -5,6 +5,7 @@ import { CreateTodoDto } from './dto/create.dto';
 import { Todo } from '@prisma/client';
 import { TodosRepository } from './todos.repository';
 import { UpdateTodoDto } from './dto/update.dto';
+import { PrismaTransaction } from 'src/common/prisma/prisma.type';
 
 @Injectable()
 export class TodosService {
@@ -34,11 +35,34 @@ export class TodosService {
         title: payload.title,
         content: payload.content,
         completed: payload.completed ?? false,
-        User: {
-          connect: { uid: userId.value },
-        },
+        userId: userId.value,
       },
     });
+  }
+
+  async createTodoTutorial(userId: UID, tx?: PrismaTransaction): Promise<Todo> {
+    const id = new UID();
+
+    console.log({
+      uid: id.value,
+      title: 'Welcome to Todo App!',
+      content: 'This is a tutorial todo.',
+      completed: false,
+      userId: userId.value,
+    });
+
+    return this.repository.create(
+      {
+        data: {
+          uid: id.value,
+          title: 'Welcome to Todo App!',
+          content: 'This is a tutorial todo.',
+          completed: false,
+          userId: userId.value,
+        },
+      },
+      tx,
+    );
   }
 
   async completeTodo(id: UID): Promise<Todo> {

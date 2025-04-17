@@ -3,11 +3,11 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { CredentialsModule } from '../credentials/credentials.module';
 import { UsersModule } from '../users/users.module';
+import { TodosModule } from '../todos/todos.module';
 
 @Module({
   providers: [AuthService],
-  exports: [AuthService],
   controllers: [AuthController],
-  imports: [CredentialsModule, UsersModule],
+  imports: [CredentialsModule, UsersModule, TodosModule],
 })
 export class AuthModule {}

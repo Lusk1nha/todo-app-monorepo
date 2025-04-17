@@ -4,12 +4,7 @@ import {
   RegisterWithCredentialsOutput,
 } from './dto/create.dto';
 
-import {
-  BadRequestException,
-  ConflictException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 
 import { JwtService } from '@nestjs/jwt';
 
@@ -22,11 +17,12 @@ import { PrismaService } from 'src/common/prisma/prisma.service';
 
 import { Logger } from '@nestjs/common';
 import { AuthProviderType, User } from '@prisma/client';
-import { JWT_EXPIRATION } from 'src/common/constants/secrets';
 
 import { createJWTPayload } from 'src/helpers/jwt';
 import { ConfigService } from '@nestjs/config';
 import { PrismaTransaction } from 'src/common/prisma/prisma.type';
+import { TodosService } from '../todos/todos.service';
+import { UID } from 'src/common/entities/uid/uid';
 
 @Injectable()
 export class AuthService {
@@ -36,8 +32,9 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly configService: ConfigService,
-    private readonly credentialsService: CredentialsService,
     private readonly usersService: UsersService,
+    private readonly credentialsService: CredentialsService,
+    private readonly todosService: TodosService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -50,6 +47,8 @@ export class AuthService {
     try {
       return await this.prisma.$transaction(async (tx: PrismaTransaction) => {
         const user = await this.createUserWithCredentials({ name, email, password }, tx);
+
+        await this.todosService.createTodoTutorial(new UID(user.uid), tx);
 
         this.logger.log(`User registered successfully: ${user.uid}`);
         return user;

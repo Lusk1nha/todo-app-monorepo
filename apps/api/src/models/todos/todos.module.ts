@@ -6,5 +6,6 @@ import { TodosRepository } from './todos.repository';
 @Module({
   controllers: [TodosController],
   providers: [TodosRepository, TodosService],
+  exports: [TodosService],
 })
 export class TodosModule {}

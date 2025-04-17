@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma, Todo } from '@prisma/client';
 import { PrismaService } from 'src/common/prisma/prisma.service';
+import { PrismaTransaction } from 'src/common/prisma/prisma.type';
 
 interface GetParams {
   where?: Prisma.TodoWhereInput;
@@ -15,12 +16,16 @@ interface GetOneParams {
 }
 
 interface CreateParams {
-  data: Prisma.TodoCreateInput;
+  data: Prisma.XOR<Prisma.TodoCreateInput, Prisma.TodoUncheckedCreateInput>;
 }
 
 @Injectable()
 export class TodosRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  private getClient(tx?: PrismaTransaction) {
+    return tx ?? this.prisma;
+  }
 
   async getAll(params: GetParams): Promise<Todo[]> {
     return this.prisma.todo.findMany({
@@ -34,11 +39,9 @@ export class TodosRepository {
     });
   }
 
-  async create(params: CreateParams): Promise<Todo> {
-    const { data } = params;
-
-    return this.prisma.todo.create({
-      data,
+  async create(params: CreateParams, tx?: PrismaTransaction): Promise<Todo> {
+    return this.getClient(tx).todo.create({
+      data: params.data,
     });
   }
 
