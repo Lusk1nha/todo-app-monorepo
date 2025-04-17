@@ -1,7 +1,9 @@
 import "./globals.css";
 import "@todo-app/design-system/styles.css";
 import "@todo-app/ui/styles.css";
+
 import type { Metadata } from "next";
+import { SystemProviders } from "../components/system-providers";
 
 export const metadata: Metadata = {
   title: "Todo App",
@@ -15,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SystemProviders>{children}</SystemProviders>
+      </body>
     </html>
   );
 }

@@ -1,6 +1,6 @@
 import { IsIn, IsNumberString, IsOptional, IsString } from 'class-validator';
 
-export class BaseQueryDto {
+export class BaseQueryDto<W> {
   @IsNumberString()
   @IsOptional()
   skip?: number;
@@ -16,4 +16,6 @@ export class BaseQueryDto {
   @IsOptional()
   @IsIn(['asc', 'desc'])
   order?: 'asc' | 'desc';
+
+  where?: W;
 }

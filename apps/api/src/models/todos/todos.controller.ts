@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AllowAuthenticated, GetUser } from 'src/common/auth/auth.decorator';
 import { TodosService } from './todos.service';
@@ -9,6 +9,7 @@ import { UIDParam } from 'src/common/entities/uid/uid.decorator';
 import { TodoEntity } from './entity/todos.entity';
 import { UpdateTodoDto } from './dto/update.dto';
 import { checkRowLevelPermission } from 'src/common/auth/auth.utils';
+import { TodoQueryDto } from './dto/query.dto';
 
 @Controller('todos')
 @ApiTags('Todos')
@@ -27,8 +28,8 @@ export class TodosController {
     isArray: true,
     description: 'Successfully retrieved list of todos',
   })
-  async getTodos(@GetUser() currentUser: UserAuthType) {
-    return this.todosService.getUserTodos(new UID(currentUser.sub));
+  async getTodos(@Query() params: TodoQueryDto, @GetUser() currentUser: UserAuthType) {
+    return this.todosService.getUserTodos(new UID(currentUser.sub), params);
   }
 
   @Get(':id')
@@ -58,7 +59,7 @@ export class TodosController {
   })
   async createTodo(@Body() payload: CreateTodoDto, @GetUser() currentUser: UserAuthType) {
     const userId = new UID(currentUser.sub);
-    return this.todosService.createTodo(payload, userId);
+    return this.todosService.createTodo(userId, payload);
   }
 
   @Post(':id/complete')

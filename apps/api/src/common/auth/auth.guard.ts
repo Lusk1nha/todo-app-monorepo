@@ -60,6 +60,10 @@ export class AuthGuard implements CanActivate {
 
     request.user.roles = userRoles;
 
+    if (!userRoles || userRoles.length === 0) {
+      throw new UnauthorizedException("User doesn't have any roles assigned.");
+    }
+
     if (!requiredRoles || requiredRoles.length === 0) {
       return true;
     }

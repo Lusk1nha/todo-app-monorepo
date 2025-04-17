@@ -48,7 +48,7 @@ export class AuthService {
       return await this.prisma.$transaction(async (tx: PrismaTransaction) => {
         const user = await this.createUserWithCredentials({ name, email, password }, tx);
 
-        await this.todosService.createTodoTutorial(new UID(user.uid), tx);
+        await this.todosService.createDefaultTodos(new UID(user.uid), tx);
 
         this.logger.log(`User registered successfully: ${user.uid}`);
         return user;
