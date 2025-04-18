@@ -10,7 +10,10 @@ export default function RootTemplate(
   const { children } = props;
 
   return (
-    <div className={`${josefinSans.className} font-sans antialiased`}>
+    <div
+      id="root-template"
+      className={`${josefinSans.className} font-sans antialiased`}
+    >
       <div className="bg-background w-full h-screen flex items-center justify-center">
         {children}
       </div>

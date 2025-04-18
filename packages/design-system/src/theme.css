@@ -42,11 +42,14 @@
   --color-border: var(--theme-color-border);
   --color-input-background: var(--theme-color-input-background);
   --color-input-text: var(--theme-color-input-text);
+  --color-input-placeholder: var(--theme-color-input-placeholder);
   --color-text: var(--theme-color-text);
   --color-placeholder: var(--theme-color-placeholder);
   --color-shadow: var(--theme-color-shadow);
   --color-button-gradient: var(--theme-color-button-gradient);
   --color-banner-gradient: var(--theme-color-banner-gradient);
+
+  --breakpoint-xs: 22.5rem;
 }
 
 @layer base {
@@ -63,6 +66,7 @@
 
     --theme-color-input-background: var(--color-white);
     --theme-color-input-text: var(--color-rhythm);
+    --theme-color-input-placeholder: var(--color-manatee);
 
     --theme-color-text: var(--color-independence-90);
     --theme-color-placeholder: var(--color-light-gray);
@@ -92,6 +96,7 @@
 
     --theme-color-input-background: var(--color-yankees-blue);
     --theme-color-input-text: var(--color-manatee);
+    --theme-color-input-placeholder: var(--color-rhythm);
 
     --theme-color-text: var(--color-periwinkle-crayola);
     --theme-color-placeholder: var(--color-independence);

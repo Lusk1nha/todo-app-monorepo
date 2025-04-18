@@ -22,13 +22,13 @@ export function BannerImage() {
   return (
     <div className="absolute h-full top-0 left-0 w-full max-h-[200px] md:max-h-[300px] flex items-center justify-center overflow-hidden z-0 opacity-25">
       <Image
-        className="-z-10"
+        className="h-full xs:!h-auto"
         src={getImageByTheme(theme)}
         alt="Banner Image"
         width={0}
         height={0}
         sizes="100vw"
-        style={{ width: "100%", height: "auto" }}
+        style={{ width: "100%" }}
       />
     </div>
   );

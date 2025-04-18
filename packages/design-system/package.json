@@ -10,7 +10,17 @@
   ],
   "exports": {
     "./theme.css": "./src/theme.css",
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./button": "./src/button.tsx",
+    "./button/*": "./src/button/*",
+    "./circle": "./src/circle.tsx",
+    "./circle/*": "./src/circle/*",
+    "./spinner": "./src/spinner.tsx",
+    "./spinner/*": "./src/spinner/*",
+    "./text-input": "./src/text-input.tsx",
+    "./text-input/*": "./src/text-input/*",
+    "./banner": "./src/banner.tsx",
+    "./banner/*": "./src/banner/*"
   },
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css",
@@ -24,6 +34,7 @@
   "devDependencies": {
     "@todo-app/eslint-config": "workspace:*",
     "@todo-app/typescript-config": "workspace:*",
+    "@todo-app/utils": "workspace:*",
     "@types/react": "^19.0.10",
     "typescript": "^5.8.2"
   },
@@ -31,6 +42,7 @@
     "@tailwindcss/cli": "^4.0.12",
     "@tailwindcss/postcss": "^4.0.12",
     "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.488.0",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.0.12"
   }

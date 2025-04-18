@@ -3,9 +3,9 @@ import { Logo } from "../../../../components/logo";
 
 export function Header() {
   return (
-    <div className="w-full py-12 md:py-[70px] px-6 flex items-center justify-between z-10">
+    <header className="w-full py-12 pb-10 md:py-[70px] px-6 flex items-center justify-between z-10">
       <Logo />
       <ThemeAction />
-    </div>
+    </header>
   );
 }

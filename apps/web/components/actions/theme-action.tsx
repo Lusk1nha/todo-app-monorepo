@@ -5,6 +5,8 @@ import { useCallback } from "react";
 import { MoonIcon } from "../icons/moon-icon";
 import { SunIcon } from "../icons/sun-icon";
 
+import { Button } from "@todo-app/design-system/button";
+
 export function ThemeAction() {
   const { theme, setTheme } = useTheme();
 
@@ -13,12 +15,12 @@ export function ThemeAction() {
   }, [theme, setTheme]);
 
   return (
-    <button
-      className="w-5 h-5 md:w-7 md:h-7 text-white flex items-center justify-center cursor-pointer"
-      type="button"
-      onClick={handleClick}
-    >
-      {theme === "light" ? <MoonIcon /> : <SunIcon />}
-    </button>
+    <Button size="icon" variant="ghost" type="button" onClick={handleClick}>
+      {theme === "light" ? (
+        <MoonIcon className="h-5" />
+      ) : (
+        <SunIcon className="h-5" />
+      )}
+    </Button>
   );
 }
