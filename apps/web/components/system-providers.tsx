@@ -1,6 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "../providers/theme-provider";
+import { Toaster } from "sonner";
 
 interface SystemProvidersProps {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ export function SystemProviders(props: Readonly<SystemProvidersProps>) {
       disableTransitionOnChange
       storageKey="web:theme"
     >
+      <Toaster />
       {children}
     </ThemeProvider>
   );

@@ -22,7 +22,7 @@ export class CredentialsService {
     this.logger.log(`Creating credentials for UID: ${payload.uid}`);
     const { uid, email, password } = payload;
 
-    const emailAsString = email.value;
+    const emailAsString = email.value.trim().toLowerCase();
     const passwordHash = hashPassword(password);
 
     return (prisma ?? this.prisma).credentials.create({

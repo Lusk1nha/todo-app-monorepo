@@ -109,6 +109,16 @@ export class AuthService {
     };
   }
 
+  async getUserNameAvailability(name: string): Promise<boolean> {
+    const user = await this.usersService.getUserByName(name);
+    return !user;
+  }
+
+  async getEmailAvailability(email: Email): Promise<boolean> {
+    const user = await this.credentialsService.getByEmail(email);
+    return !user;
+  }
+
   private async verifyEmailAvailability(email: Email): Promise<void> {
     const existing = await this.credentialsService.getByEmail(email);
 

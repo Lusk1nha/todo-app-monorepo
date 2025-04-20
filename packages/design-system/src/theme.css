@@ -34,15 +34,19 @@
   --color-interdimensional-blue: oklch(0.39 0.2321 277.21);
   --color-fandango: oklch(0.51 0.2019 333.52);
 
+  --color-danger: oklch(0.57 0.2219 20.09);
+
   --color-background: var(--theme-color-background);
   --color-primary: var(--theme-color-primary);
   --color-content: var(--theme-color-content);
   --color-title: var(--theme-color-title);
   --color-action-text: var(--theme-color-action-text);
+  --color-action-text-hover: var(--theme-color-action-text-hover);
   --color-border: var(--theme-color-border);
   --color-input-background: var(--theme-color-input-background);
   --color-input-text: var(--theme-color-input-text);
   --color-input-placeholder: var(--theme-color-input-placeholder);
+  --color-input-error: var(--theme-color-input-error);
   --color-text: var(--theme-color-text);
   --color-placeholder: var(--theme-color-placeholder);
   --color-shadow: var(--theme-color-shadow);
@@ -60,13 +64,16 @@
     --theme-color-content: var(--color-white);
 
     --theme-color-title: var(--color-white);
+
     --theme-color-action-text: var(--color-manatee);
+    --theme-color-action-text-hover: var(--color-independence-90);
 
     --theme-color-border: var(--color-lavender-web);
 
     --theme-color-input-background: var(--color-white);
     --theme-color-input-text: var(--color-rhythm);
     --theme-color-input-placeholder: var(--color-manatee);
+    --theme-color-input-error: var(--color-danger);
 
     --theme-color-text: var(--color-independence-90);
     --theme-color-placeholder: var(--color-light-gray);
@@ -92,11 +99,14 @@
     --theme-color-content: var(--color-yankees-blue);
 
     --theme-color-action-text: var(--color-dark-electric-blue);
+    --theme-color-action-text-hover: var(--color-lavender-web);
+
     --theme-color-border: var(--color-arsenic);
 
     --theme-color-input-background: var(--color-yankees-blue);
     --theme-color-input-text: var(--color-manatee);
     --theme-color-input-placeholder: var(--color-rhythm);
+    --theme-color-input-error: var(--color-danger);
 
     --theme-color-text: var(--color-periwinkle-crayola);
     --theme-color-placeholder: var(--color-independence);

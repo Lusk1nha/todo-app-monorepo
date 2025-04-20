@@ -37,8 +37,21 @@ export class UsersService {
     );
   }
 
+  async getUserByName(name: string, tx?: PrismaTransaction) {
+    const username = name.trim().toLowerCase();
+
+    return this.usersRepository.get(
+      {
+        where: { name: username },
+      },
+      tx,
+    );
+  }
+
   async createUser(payload: CreateUserDto, tx?: PrismaTransaction) {
-    const { name, provider } = payload;
+    let { name, provider } = payload;
+
+    name = name.trim().toLowerCase();
 
     const uid = new UID();
 
@@ -60,7 +73,18 @@ export class UsersService {
 
   async updateById(uid: UID, payload: UpdateUserDto, tx?: PrismaTransaction) {
     await this.getUserById(uid);
-    return this.usersRepository.update(uid.value, payload, tx);
+
+    const username = payload.name?.trim().toLowerCase();
+    const image = payload.image?.trim();
+
+    return this.usersRepository.update(
+      uid.value,
+      {
+        name: username,
+        image,
+      },
+      tx,
+    );
   }
 
   async removeById(uid: UID, tx?: PrismaTransaction) {

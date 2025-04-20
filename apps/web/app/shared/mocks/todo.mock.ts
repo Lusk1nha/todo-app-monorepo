@@ -11,6 +11,7 @@ export class TodoMockup extends BaseMockup<TodoEntity> {
     let content = faker.lorem.paragraph(3);
 
     let completed = faker.datatype.boolean();
+    let position = faker.number.int({ min: 0, max: 100 });
 
     let userId = new UID().value;
 
@@ -24,6 +25,7 @@ export class TodoMockup extends BaseMockup<TodoEntity> {
       title,
       content,
       completed,
+      position,
       userId,
       createdAt,
       updatedAt,

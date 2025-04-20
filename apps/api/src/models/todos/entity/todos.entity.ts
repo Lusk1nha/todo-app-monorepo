@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Todo } from '@prisma/client';
-import { IsBoolean, IsDate, IsUUID } from 'class-validator';
+import { IsBoolean, IsDate, IsNumber, IsUUID } from 'class-validator';
 
 export class TodoEntity implements Todo {
   constructor(todo: Todo) {
@@ -9,6 +9,7 @@ export class TodoEntity implements Todo {
     this.content = todo.content;
 
     this.completed = todo.completed;
+    this.position = todo.position;
 
     this.userId = todo.userId;
 
@@ -29,6 +30,10 @@ export class TodoEntity implements Todo {
   @ApiProperty()
   @IsBoolean()
   completed: boolean;
+
+  @ApiProperty()
+  @IsNumber()
+  position: number;
 
   @ApiProperty()
   @IsUUID('4')

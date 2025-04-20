@@ -5,6 +5,7 @@ export interface Todo {
   content: string | null;
 
   completed: boolean;
+  position: number;
 
   userId: string;
 
@@ -19,6 +20,7 @@ export class TodoEntity implements Todo {
   content: string | null;
 
   completed: boolean;
+  position: number;
 
   userId: string;
 
@@ -30,6 +32,7 @@ export class TodoEntity implements Todo {
     this.title = todo.title;
     this.content = todo.content;
     this.completed = todo.completed;
+    this.position = todo.position;
     this.userId = todo.userId;
     this.createdAt = todo.createdAt;
     this.updatedAt = todo.updatedAt;

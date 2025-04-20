@@ -58,6 +58,7 @@ model Todo {
   User   User?   @relation(fields: [userId], references: [uid], onDelete: Cascade)
   userId String?
 
+  position  Int     @default(0)
   completed Boolean @default(false)
 
   @@map("todos")

@@ -18,6 +18,12 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { Email } from 'src/common/entities/email/email';
+import {
+  GetEmailAvailabilityInput,
+  GetEmailAvailabilityOutput,
+  GetUserNameAvailabilityInput,
+  GetUserNameAvailabilityOutput,
+} from './dto/get.dto';
 
 @Controller('auth')
 @ApiTags('Authentication')
@@ -36,9 +42,6 @@ export class AuthController {
   @ApiCreatedResponse({
     type: RegisterWithCredentialsOutput,
     description: 'User registered successfully',
-  })
-  @ApiBadRequestResponse({
-    description: 'Invalid input data or missing required fields',
   })
   @ApiConflictResponse({
     description: 'Email already registered',
@@ -62,13 +65,44 @@ export class AuthController {
     type: LoginWithCredentialsOutput,
     description: 'User authenticated successfully',
   })
-  @ApiUnauthorizedResponse({
-    description: 'Invalid credentials',
-  })
   async login(@Body() payload: LoginWithCredentialsInput): Promise<LoginWithCredentialsOutput> {
     const email = new Email(payload.email);
     const user = await this.authService.validateCredentials(email, payload.password);
 
     return this.authService.signInWithCredentials(user);
+  }
+
+  @Post('username-exists')
+  @ApiOperation({
+    summary: 'Check if username exists',
+    description: 'Check if a username is already taken',
+  })
+  async checkUsernameExists(
+    @Body() payload: GetUserNameAvailabilityInput,
+  ): Promise<GetUserNameAvailabilityOutput> {
+    const userName = payload.name;
+
+    const isAvailable = await this.authService.getUserNameAvailability(userName);
+
+    return {
+      available: isAvailable,
+    };
+  }
+
+  @Post('email-exists')
+  @ApiOperation({
+    summary: 'Check if email exists',
+    description: 'Check if an email is already registered',
+  })
+  async checkEmailExists(
+    @Body() payload: GetEmailAvailabilityInput,
+  ): Promise<GetEmailAvailabilityOutput> {
+    const email = new Email(payload.email);
+
+    const isAvailable = await this.authService.getEmailAvailability(email);
+
+    return {
+      available: isAvailable,
+    };
   }
 }

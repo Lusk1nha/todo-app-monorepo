@@ -6,11 +6,10 @@ import { UID } from "../../entities/uid/uid";
 
 interface DeleteTodoActionProps {
   todoId: UID;
-  className?: string;
 }
 
 export function DeleteTodoAction(props: Readonly<DeleteTodoActionProps>) {
-  const { todoId, className } = props;
+  const { todoId } = props;
 
   async function handleClick() {
     console.log("Delete todo", todoId.value);

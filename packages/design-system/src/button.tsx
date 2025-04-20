@@ -9,8 +9,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "",
+        default:
+          "bg-transparent text-action-text font-semibold hover:text-action-text-hover tracking-[-0.17px] md:!tracking-[-0.19px]",
         ghost: "bg-transparent text-white hover:bg-white/10",
+        auth: "bg-primary text-white hover:bg-button-hover",
       },
       size: {
         default: "h-9 sm:h-11",
