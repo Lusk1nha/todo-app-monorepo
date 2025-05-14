@@ -9,7 +9,8 @@
     "dist"
   ],
   "exports": {
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./popover.tsx": "./src/popover.tsx"
   },
   "scripts": {
     "build": "tailwindcss -i ./src/styles.css -o ./dist/styles.css",
@@ -23,12 +24,14 @@
   "devDependencies": {
     "@todo-app/eslint-config": "workspace:*",
     "@todo-app/typescript-config": "workspace:*",
+    "@todo-app/utils": "workspace:*",
     "@turbo/gen": "^2.4.4",
     "@types/node": "^22.13.10",
     "@types/react": "19.0.12",
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@radix-ui/react-popover": "^1.1.10",
     "@tailwindcss/cli": "^4.1.3",
     "@tailwindcss/postcss": "^4.0.12",
     "@todo-app/design-system": "workspace:*",

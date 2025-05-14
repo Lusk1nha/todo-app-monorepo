@@ -20,6 +20,7 @@ model User {
 
   AuthProvider AuthProvider[]
   Admin        Admin[]
+  RefreshToken RefreshToken[]
 
   @@map("users")
 }
@@ -78,4 +79,18 @@ model AuthProvider {
 enum AuthProviderType {
   GOOGLE
   CREDENTIALS
+}
+
+model RefreshToken {
+  id String @id @default(cuid())
+
+  userId String
+  User   User   @relation(fields: [userId], references: [uid], onDelete: Cascade)
+
+  token String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("refresh_tokens")
 }

@@ -14,6 +14,8 @@ import { toast } from "sonner";
 import { API_BASE_URL } from "../../../shared/config";
 import { delay } from "@todo-app/mockup/delay";
 import { useRouter } from "next/navigation";
+import { SignInValidation } from "../../../shared/validations/signin.validation";
+import { signIn } from "next-auth/react";
 
 export function SignUpForm() {
   const router = useRouter();
@@ -27,10 +29,16 @@ export function SignUpForm() {
   async function onFormSubmit(data: SignUpValidation): Promise<void> {
     try {
       await registerUser(data);
+      await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      } as SignInValidation);
+
       toast.success("Registration successful! Redirecting...");
 
       await delay(1000);
-      router.push(SystemPath.Login);
+      router.push(SystemPath.Home);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "An unexpected error occurred";
@@ -43,7 +51,9 @@ export function SignUpForm() {
     }
   }
 
-  async function registerUser(payload: SignUpValidation): Promise<any> {
+  async function registerUser(
+    payload: SignUpValidation
+  ): Promise<SignInValidation> {
     const { email, name, password } = payload;
 
     try {
@@ -61,7 +71,10 @@ export function SignUpForm() {
         throw new Error(data.message || "Registration failed");
       }
 
-      return data;
+      return {
+        email: data.email,
+        password: data.password,
+      };
     } catch (error) {
       if (error instanceof TypeError) {
         throw new Error("Network error. Please check your connection.");

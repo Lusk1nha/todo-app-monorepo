@@ -9,8 +9,13 @@ import {
   IsUrl,
   IsUUID,
 } from 'class-validator';
+import { UserEntity } from 'src/models/users/entity/users.entity';
 
 export class TokenResponse {
+  @ApiProperty()
+  @IsString()
+  refreshToken: string;
+
   @ApiProperty()
   @IsString()
   accessToken: string;
@@ -76,8 +81,7 @@ export class LoginWithCredentialsInput {
 
 export class LoginWithCredentialsOutput {
   @ApiProperty()
-  @IsUUID('4')
-  userId: string;
+  user: UserEntity;
 
   @ApiProperty()
   token: TokenResponse;

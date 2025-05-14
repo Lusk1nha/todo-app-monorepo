@@ -80,12 +80,15 @@ export class AuthService {
 
   async signInWithCredentials(user: User): Promise<LoginWithCredentialsOutput> {
     const payload = createJWTPayload(user);
+
     const token = await this.generateJwtToken(payload);
 
     this.logger.log(`User authenticated successfully: ${user.uid}`);
+
     return {
-      userId: user.uid,
+      user,
       token: {
+        refreshToken: token,
         accessToken: token,
         tokenType: 'Bearer',
         expiresIn: this.configService.get<string>('JWT_EXPIRATION'),

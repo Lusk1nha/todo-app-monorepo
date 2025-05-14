@@ -12,8 +12,6 @@ import {
   ApiOperation,
   ApiBody,
   ApiConflictResponse,
-  ApiUnauthorizedResponse,
-  ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';

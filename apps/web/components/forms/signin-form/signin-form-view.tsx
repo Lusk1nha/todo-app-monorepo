@@ -2,7 +2,7 @@
 
 import { useFormContext } from "react-hook-form";
 import { SignInValidation } from "../../../shared/validations/signin.validation";
-import { TextInput } from "@todo-app/design-system/text-input";
+
 import { Button } from "@todo-app/design-system/button";
 import { TextInputControlled } from "../../inputs/text-input-controlled";
 import Link from "next/link";
@@ -40,7 +40,7 @@ export function SignInFormView(props: Readonly<SignInFormViewProps>) {
       </fieldset>
 
       <div className="flex flex-col gap-y-2">
-        <SaveAction disabled={isSubmitSuccessful} isSubmitting={isSubmitting}>
+        <SaveAction isSubmitting={isSubmitting}>
           {isSubmitting ? "Signing in..." : "Sign In"}
         </SaveAction>
 

@@ -1,0 +1,23 @@
+{
+  "name": "@todo-app/network",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "exports": {
+    "./authOptions": "./src/authOptions.ts"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@todo-app/eslint-config": "workspace:*",
+    "@todo-app/typescript-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.9",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "next-auth": "^4.24.11"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}
